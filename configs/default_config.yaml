@@ -1,0 +1,104 @@
+# Traffic Light RL Configuration
+# This file contains default configuration parameters for training and evaluation
+
+# Environment Configuration
+environment:
+  max_queue: 10
+  arrival_prob: 0.6
+  max_vehicles_per_step: 2
+  max_steps: 100
+  render_mode: null
+
+# Training Configuration
+training:
+  total_timesteps: 100000
+  log_interval: 10
+  save_interval: 10000
+  eval_interval: 5000
+  n_eval_episodes: 10
+
+# Model Configurations
+models:
+  PPO:
+    learning_rate: 3e-4
+    n_steps: 2048
+    batch_size: 64
+    n_epochs: 10
+    gamma: 0.99
+    gae_lambda: 0.95
+    clip_range: 0.2
+    ent_coef: 0.01
+    vf_coef: 0.5
+    max_grad_norm: 0.5
+    policy_kwargs:
+      net_arch:
+        pi: [64, 64]
+        vf: [64, 64]
+
+  SAC:
+    learning_rate: 3e-4
+    buffer_size: 100000
+    learning_starts: 1000
+    batch_size: 256
+    tau: 0.005
+    gamma: 0.99
+    train_freq: 1
+    gradient_steps: 1
+    ent_coef: "auto"
+    target_update_interval: 1
+    policy_kwargs:
+      net_arch: [256, 256]
+
+  TD3:
+    learning_rate: 3e-4
+    buffer_size: 100000
+    learning_starts: 1000
+    batch_size: 256
+    tau: 0.005
+    gamma: 0.99
+    train_freq: 1
+    gradient_steps: 1
+    policy_delay: 2
+    target_policy_noise: 0.2
+    target_noise_clip: 0.5
+    policy_kwargs:
+      net_arch: [256, 256]
+
+  DQN:
+    learning_rate: 1e-4
+    buffer_size: 100000
+    learning_starts: 1000
+    batch_size: 32
+    tau: 1.0
+    gamma: 0.99
+    train_freq: 4
+    gradient_steps: 1
+    target_update_interval: 1000
+    exploration_fraction: 0.1
+    exploration_initial_eps: 1.0
+    exploration_final_eps: 0.05
+    policy_kwargs:
+      net_arch: [256, 256]
+
+# Logging Configuration
+logging:
+  use_wandb: false
+  use_tensorboard: true
+  project_name: "traffic-light-rl"
+  log_dir: "logs"
+  save_dir: "models"
+
+# Paths
+paths:
+  models_dir: "models"
+  logs_dir: "logs"
+  configs_dir: "configs"
+  data_dir: "data"
+
+# Visualization
+visualization:
+  plot_training_curves: true
+  plot_policy_visualization: true
+  save_plots: true
+  plot_format: "png"
+  plot_dpi: 300
